@@ -1,0 +1,19 @@
+spring.application.name=com
+spring.datasource.url=jdbc:postgresql://localhost:5432/projedb
+spring.datasource.username=postgres
+spring.datasource.password=YOUR_DB_PASSWORD
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# jwt konfigurations
+jwt.secret=YOUR_JWT_SECRET
+jwt.expiration=86400000
+
+# Yetkili kaydı için geçici şifre
+app.gecici-sifre=YOUR_TEMP_PASSWORD
+
+# sms service
+twilio.account-sid=YOUR_TWILIO_ACCOUNT_SID
+twilio.auth-token=YOUR_TWILIO_AUTH_TOKEN
+twilio.phone-number=YOUR_TWILIO_PHONE_NUMBER
