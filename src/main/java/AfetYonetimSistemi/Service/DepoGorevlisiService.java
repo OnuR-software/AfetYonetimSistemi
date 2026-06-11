@@ -192,6 +192,7 @@ public class DepoGorevlisiService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void DepolarArasıTransferHazırlama (Long talepId) {
         User user = userRepository.findByUuid(UUID.fromString(MevcutKullanici()))
                 .orElseThrow(() -> new NotFoundUserException("Kullanıcı bulunamadı"));
@@ -199,6 +200,21 @@ public class DepoGorevlisiService {
 
         KaynakTalep talep = kaynakTalepRepository.findByIdAndTransferDurumuAndYardımGoturenDepo(talepId , TransferDurumu.ONAYLANDI , depoGorevlisi.getDepo())
                 .orElseThrow(() -> new NotFoundTalep("Bu idye ait talep bulunamadı : " + talepId));
+
+        talep.getKalemler().forEach(kalem -> {
+            DepoMalzeme depoMalzeme = depoMalzemeRepository.findByDepoAndMalzeme(talep.getYardımGoturenDepo() , kalem.getMalzeme())
+                    .orElseThrow(() -> new NotFoundDepoMalzemeException("Depoda boyle bir malzeme mevcut degıl : " + kalem.getMalzeme().getMalzemeAdi()));
+            if (depoMalzeme.KullanılabilirStokMiktari() < kalem.getMiktar())
+                throw new InvalidDepoMalzemeException("Depoda yeterli stok yok : " + kalem.getMalzeme().getMalzemeAdi());
+        });
+
+        talep.getKalemler().forEach(kalem -> {
+            DepoMalzeme depoMalzeme = depoMalzemeRepository.findByDepoAndMalzeme(talep.getYardımGoturenDepo() , kalem.getMalzeme())
+                    .orElseThrow(() -> new NotFoundDepoMalzemeException("Depoda boyle bir malzeme mevcut degıl : " + kalem.getMalzeme().getMalzemeAdi()));
+            depoMalzeme.setRezerveStokMiktari(depoMalzeme.getRezerveStokMiktari() + kalem.getMiktar());
+            depoMalzemeRepository.save(depoMalzeme);
+        });
+
         talep.setTransferDurumu(TransferDurumu.HAZIRLANIYOR);
         talep.setGuncelleme_tarihi(LocalDateTime.now());
         kaynakTalepRepository.save(talep);

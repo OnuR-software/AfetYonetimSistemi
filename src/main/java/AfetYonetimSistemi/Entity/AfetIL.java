@@ -24,6 +24,12 @@ public class AfetIL {
     @JoinColumn(name = "afet_id")
     private Afet afet;
 
+    @Column(name = "latitude" , nullable = false)
+    private double lat;
+
+    @Column(name = "longtitude" , nullable = false)
+    private double lon;
+
     @ManyToOne
     @JoinColumn(name = "il_id")
     private IL il;
@@ -34,6 +40,6 @@ public class AfetIL {
     @Column(name = "baslangic_tarihi" , nullable = false)
     private LocalDateTime baslangicTarihi;
 
-    @Column(name = "bitis_tarihi" , nullable = false)
+    @Column(name = "bitis_tarihi" , nullable = true)
     private LocalDateTime bitisTarihi;
 }

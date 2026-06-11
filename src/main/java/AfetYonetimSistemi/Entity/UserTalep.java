@@ -54,7 +54,7 @@ public class UserTalep {
     @Default
     private boolean aktif = true;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "il_id")
     private IL mevcutIl;
 
