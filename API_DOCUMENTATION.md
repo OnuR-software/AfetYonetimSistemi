@@ -78,12 +78,7 @@ YARDIM | YEMEK | CADIR | SU
 
 ### `TransferDurumu`
 ```
-BEKLEMEDE | ONAYLANDI | REDDEDILDI
-```
-
-### `KargoDurumu` _(talep kargo takibi)_
-```
-HAZIRLANIYOR | YOLDA | TESLİM_EDİLDİ
+BEKLEMEDE | ONAYLANDI | REDDEDILDI | HAZIRLANIYOR | YOLDA | TESLIM_EDILDI | IPTAL_EDILDI
 ```
 
 ---
@@ -731,7 +726,7 @@ Deponun karşılaması gereken onaylanmış talepleri listeler.
 
 ### `PUT /api/depo-gorevlisi/talep/{talepId}/hazirla`
 
-Talebin hazırlanmaya başlandığını işaretler. Kargo durumu `HAZIRLANIYIOR` olur.
+Talebin hazırlanmaya başlandığını işaretler. Kargo durumu `HAZIRLANIYOR` olur.
 
 **Path Parameter:**
 
@@ -783,7 +778,7 @@ Admin tarafından onaylanmış, görevlinin deposundan gönderilmesi gereken dep
   {
     "talepId": 15,
     "oncelik": "ACIL",
-    "transferDurumu": "BEKLEMEDE",
+    "transferDurumu": "ONAYLANDI",
     "adminNotu": null,
     "latitude": 39.9334,
     "longitude": 32.8597,
@@ -958,14 +953,18 @@ Bir ili afet bölgesi olarak aktifleştirir.
 ```json
 {
   "il": "Kahramanmaraş",
-  "afetId": 1
+  "afetId": 1,
+  "lat": 37.5858,
+  "lon": 36.9371
 }
 ```
 
 | Alan | Tip | Zorunlu | Kural |
 |---|---|---|---|
 | `il` | string | Evet | 3–20 karakter (il adı) |
-| `afetId` | number | Evet | Sistemdeki afet tanım ID'si |
+| `afetId` | number | Evet | Pozitif tamsayı — sistemdeki afet tanım ID'si |
+| `lat` | number | Evet | Türkiye sınırları: 35.0–43.0 |
+| `lon` | number | Evet | Türkiye sınırları: 25.0–45.0 |
 
 **Response `200 OK`:** _(boş body)_
 
