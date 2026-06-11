@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "İl Koordinatorleri")
+@Table(name = "koordinatorler")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
